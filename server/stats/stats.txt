@@ -1,0 +1,5 @@
+connections:0
+guesses:0
+correct:0
+falsePositive:0
+falseNegative:0

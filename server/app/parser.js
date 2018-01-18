@@ -13,12 +13,16 @@ const splitIntoSentences = function(text){
       result.push(text.slice(lastIndex, i + 1));
       lastIndex = i + 2;
     }
+    if (text[i].match(/[\n]/)) {
+      lastIndex = i + 1
+    }
   }
   return result;
 }
 
 const addPair = function(obj, prev, pair){
   obj[prev]['total'] += 1;
+
   if (obj[prev]['nextPairs'].hasOwnProperty(pair)){
     obj[prev]['nextPairs'][pair] += 1;
   } else {
@@ -41,7 +45,17 @@ const parseText = function(text){
   for (let i = 0; i < sentences.length; i++){
     words = sentences[i].split(' ').filter((c)=>c.length);
 
-    addPair(wordPairs, '_start', words[0] + ' ' + words[1]);
+    if (words.length > 2){
+
+      addPair(wordPairs, '_start', words[0] + ' ' + words[1]);
+      addPair(wordPairs, '_start', words[0])
+
+      define(wordPairs, words[0]);
+      addPair(wordPairs, words[0], words[1] + ' ' + words[2]);
+      // console.log('association: ', words[0], words[1] + ' ' + words[2])
+    } else {
+      addPair(wordPairs, '_start', words.join(' '));
+    }
 
     for (var j = 3; j < words.length; j++){
       lastPair = words[j - 3] + ' ' + words[j - 2];

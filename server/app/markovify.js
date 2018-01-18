@@ -13,24 +13,23 @@ const TestString = function(text){
 TestString.prototype.getRandomSentence = function(){
   let currentPair = '_start';
   let construct = [];
-  let finished = false;
   let triesLeft = 10;
   let targetPair, result, currentObj;
 
+
   const constructify = () => {
+
     while(construct.length < 13 || currentPair !== '_start') {
-      console.log(currentPair)
+
       targetPair = Math.floor(Math.random() * this.wordGroups[currentPair]['total']);
       currentObj = this.wordGroups[currentPair]['nextPairs'];
 
       for (var key in currentObj){
         if (currentObj[key] > targetPair){
-          construct.push(key);
+          construct.push(key.split(/[\'\"\”\“]/).join(''));
 
-          if (key.match(/[\.\!\?]/)){
+          if (key.slice(key.length - 3).match(/[\.\!\?]/)){
             currentPair = '_start'
-          } else if (key.split(' ').length === 1){
-            currentPair = '_start';
           } else {
             currentPair = key
           }
@@ -42,6 +41,8 @@ TestString.prototype.getRandomSentence = function(){
     }
   }
 
+
+
   while (triesLeft > 0){
     construct = [];
     triesLeft -= 1;
@@ -49,9 +50,7 @@ TestString.prototype.getRandomSentence = function(){
     constructify();
     result = construct.join(' ');
 
-    //this last condition is so hacky
-
-    if (!this.contains.has(result) && result.length < 400 && !result.contains('undefined')){
+    if (!this.contains.has(result) && result.length < 400){
       return result;
     }
   }
