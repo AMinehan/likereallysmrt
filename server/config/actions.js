@@ -26,12 +26,7 @@ const parseStats = function(err, text){
     stats['falsePositives'] = 0;
     stats['falseNegatives'] = 0;
   } else {
-    text = text.split('\n').map(function(c){return c.split(':')});
-    stats['connections'] = text[0][1];
-    stats['guesses'] = text[1][1];
-    stats['correct'] = text[2][1];
-    stats['falsePositives'] = text[3][1];
-    stats['falseNegatives'] = text[4][1];
+    stats = JSON.parse(text)
   }
 }
 
@@ -44,7 +39,16 @@ module.exports = {
     return JSON.stringify(stats);
   },
   getSentence: function(req){
+    let truthiness = Math.floor(Math.random() * 2);
+    let targetSource = Math.floor(Math.random() * sources.length);
+    let result = [truthiness];
 
+    if (truthiness){
+      result.push(sources[targetSource].getRandomSentence());
+    } else {
+      result.push(sources[targetSource].getRealSentence());
+    }
+    return JSON.stringify(result);
   }
 }
 
