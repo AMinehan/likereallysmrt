@@ -2,18 +2,20 @@ const parseText = require('./parser.js');
 
 const TestString = function(text){
   this.text = text;
-  this.wordGroups = parseText(text);
-  let sentences = text.split(/[\.\n\!\?]/);
-  this.contains = new Set()
-  for (let i = 0; i < sentences.length; i++){
-    this.contains.add(sentences[i]);
+  let parseResult = parseText(text);
+  this.sentences = parseResult[1];
+  this.wordGroups = parseResult[0];
+  this.contains = new Set();
+
+  for (let i = 0; i < this.sentences.length; i++){
+    this.contains.add(this.sentences[i].trim());
   }
 }
 
 TestString.prototype.getRandomSentence = function(){
   let currentPair = '_start';
   let construct = [];
-  let triesLeft = 10;
+  let triesLeft = 50;
   let textLength = 0;
   let targetPair, result, currentObj;
 
@@ -50,10 +52,10 @@ TestString.prototype.getRandomSentence = function(){
     triesLeft -= 1;
     currentPair = '_start';
     constructify();
-    result = construct.join(' ');
+    // result = construct.join(' ');
 
-    if (!this.contains.has(result) && result.length < 400){
-      return result;
+    if (!construct.every((c)=>{return this.contains.has(c)})){
+      return construct.join(' ');
     }
   }
 
@@ -63,37 +65,35 @@ TestString.prototype.getRandomSentence = function(){
 }
 
 TestString.prototype.getRealSentence = function(){
-  let i = randomIndex = Math.floor(Math.random() * this.text.length - 200);
-  let startIndex, endIndex;
+  let sentenceIndex = Math.floor(Math.random() * this.sentences.length - 2);
+  let result = this.sentences[sentenceIndex];
 
-  while ((!this.text[i].match(/[A-Z]/) || !(isStartOfSentence(this.text, i))) && i > 0){
-    i -= 1;
+  console.log(this.sentences.length)
+  for (let i = 1; result.length < 150 && sentenceIndex + i < this.sentences.length; i += 1) {
+    console.log(result, i)
+    result += ' ' + this.sentences[sentenceIndex + i];
   }
-  startIndex = i;
-  i = randomIndex;
-
-  while ((!isEndOfSentence(this.text, i) || i - startIndex < 150) && i < this.text.length){
-    i += 1;
+  for (let i = -1; result.length < 150 && i + sentenceIndex >= 0; i -= 1) {
+    result += ' ' + this.sentences[sentenceIndex - i];
   }
-  endIndex = i;
 
-  return this.text.slice(startIndex, endIndex + 1).replace(/\n/g, ' ').split(/[\"\”\“]/).join('');
+  return result;
 }
 
-function isStartOfSentence(str, index){
-  let endIndicator = str.slice(index - 6, index).match(/[\!\?\.]/gi);
-  if (str[index - 1].match(/[a-z]/i) || (endIndicator && endIndicator.length > 1)){
-    return false
-  }
-  return true;
-}
+// function isStartOfSentence(str, index){
+//   let endIndicator = str.slice(index - 6, index).match(/[\!\?\.]/gi);
+//   if (str[index - 1].match(/[a-z]/i) || (endIndicator && endIndicator.length > 1)){
+//     return false
+//   }
+//   return true;
+// }
 
-function isEndOfSentence(str, index){
-  if (str[index - 1].toUpperCase === str[index - 1] && str[index - 2].match(/\.\?\!/)){
-    return false;
-  }
-  return str[index].match(/[\.\!\?]/);
-}
+// function isEndOfSentence(str, index){
+//   if (str[index - 1].toUpperCase === str[index - 1] && str[index - 2].match(/\.\?\!/)){
+//     return false;
+//   }
+//   return str[index].match(/[\.\!\?]/);
+// }
 
 function markovify(text){
   return new TestString(text);

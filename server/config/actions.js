@@ -30,12 +30,20 @@ const parseStats = function(err, text){
   }
 }
 
+const saveStats = function(){
+  fs.writeFile('./../stats/stats.txt', 'utf8', JSON.stringify(stats), (err)=>{
+    if (err) {
+      console.log('stats not saved!')
+    }
+    console.log('stats saved!')
+  });
+}
+
 module.exports = {
   finalAnswer: function(req){
 
   },
   sendStats: function(req){
-    console.log(req)
     return JSON.stringify(stats);
   },
   getSentence: function(req){

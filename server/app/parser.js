@@ -9,7 +9,7 @@ const splitIntoSentences = function(text){
   let lastIndex = 0;
 
   for (let i = 0; i < text.length; i++){
-    if (text[i].match(/[\.\!\?]/) && (text[i + 1] === ' ' || i === text.length - 1)){
+    if (text[i].match(/[\.\!\?]/) && (((text[i + 1] === ' ' || text[i + 1] === '\n') && text[i - 2] !== '.') || i === text.length - 1)){
       result.push(text.slice(lastIndex, i + 1));
       lastIndex = i + 2;
     }
@@ -52,7 +52,6 @@ const parseText = function(text){
 
       define(wordPairs, words[0]);
       addPair(wordPairs, words[0], words[1] + ' ' + words[2]);
-      // console.log('association: ', words[0], words[1] + ' ' + words[2])
     } else {
       addPair(wordPairs, '_start', words.join(' '));
     }
@@ -72,7 +71,7 @@ const parseText = function(text){
 
 
 
-  return wordPairs;
+  return [wordPairs, sentences];
 }
 
 module.exports = parseText;
