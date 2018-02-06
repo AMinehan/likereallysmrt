@@ -1,5 +1,8 @@
 const parseText = require('./parser.js');
 
+/*
+  main class for each markov object.  This is what gets pushed into the sources array.
+*/
 const TestString = function(text){
   this.text = text;
   let parseResult = parseText(text);
@@ -12,13 +15,16 @@ const TestString = function(text){
   }
 }
 
+
+// constructs a random sentence going off two word pairs.  Triesleft probably isn't needed
+// anymore but adds a little protection against getting stuck in an infinite loop due to a
+// bad source file
 TestString.prototype.getRandomSentence = function(){
   let currentPair = '_start';
   let construct = [];
-  let triesLeft = 50;
+  let triesLeft = 100;
   let textLength = 0;
   let targetPair, result, currentObj;
-
 
   const constructify = () => {
 
@@ -46,6 +52,8 @@ TestString.prototype.getRandomSentence = function(){
   }
 
 
+  // tries to put together a valid sentence.  If every sentence in the construct is a
+  // word-for-word match with a sentence in the source text, throw it away and start over.
   while (triesLeft > 0){
     construct = [];
     triesLeft -= 1;
@@ -62,6 +70,9 @@ TestString.prototype.getRandomSentence = function(){
 
 }
 
+
+// to get a real sentence, pick a random sentence out of the source text and add subsequent
+// sentences until a desired length is reached.  If EOF is reached, start adding previous sentences.
 TestString.prototype.getRealSentence = function(){
   let sentenceIndex = Math.floor(Math.random() * this.sentences.length - 2);
   if (sentenceIndex < 0) {

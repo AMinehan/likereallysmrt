@@ -1,16 +1,19 @@
+// checks if a word pair key is a property on object.  If not, makes it a property.
 const define = function(obj, key){
   if (!obj.hasOwnProperty(key)){
     obj[key] = {total: 0, nextPairs: {}}
   }
 }
 
+// iterates through and splits the source text into sentences.  Line 14 is
+// a nightmare and tries to account for abbreviations and titles.
 const splitIntoSentences = function(text){
   let result = [];
   let lastIndex = 0;
 
   for (let i = 0; i < text.length; i++){
-    if (text[i].match(/[\.\!\?]/) && (((text[i + 1] === ' ' || text[i + 1] === '\n') && text[i - 2] !== '.') || i === text.length - 1)){
-      result.push(text.slice(lastIndex, i + 1));
+    if (text[i].match(/[\.\!\?]/) && (((text[i + 1] === ' ' || text[i + 1] === '\n') && text[i - 2] !== '.'  && !text.slice(i - 4, i).match(/[A-Z]/)) || i === text.length - 1)){
+      result.push(text.slice(lastIndex, i + 1).trim());
       lastIndex = i + 2;
     }
     if (text[i].match(/[\n]/)) {
@@ -20,6 +23,7 @@ const splitIntoSentences = function(text){
   return result;
 }
 
+//
 const addPair = function(obj, prev, pair){
   obj[prev]['total'] += 1;
 
@@ -30,6 +34,9 @@ const addPair = function(obj, prev, pair){
   }
 }
 
+// takes source text, splits into sentences, iterates through sentences and
+// adds word pairings to the wordpairs object, which is used to generate random
+// sentences.
 const parseText = function(text){
   let wordPairs = {};
   let currentPair;

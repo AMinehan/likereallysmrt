@@ -1,9 +1,14 @@
+/*
+  defines api functions and keeps track of stats
+*/
+
 const fs = require('fs');
 
 let sources = require('./../app/manager.js');
 let stats = {};
 let quoteHistory = {};
 
+// loads stats from a file
 const loadStats = function(err, text){
   if (err) {
     console.log('error loading file: ', err);
@@ -14,6 +19,7 @@ const loadStats = function(err, text){
   }
 }
 
+// writes stats to a file
 const saveStats = function(){
   fs.writeFile('./stats/stats.txt', JSON.stringify(stats), {'encoding': 'utf8'}, (err)=>{
     if (err) {
@@ -26,18 +32,18 @@ const saveStats = function(){
 
 setInterval(saveStats, 60000);
 
+//defines functions to be used with certain routes
 module.exports = {
   finalAnswer: function(req){
     let answer = req.body;
-    stats.guesses += 1;
-    if (quoteHistory[answer[1]] == answer[0]) {
-      stats.correct += 1;
-    }
-    console.log(stats);
     if (quoteHistory.hasOwnProperty(answer[1])) {
+      stats.guesses += 1;
+      if (quoteHistory[answer[1]] == answer[0]) {
+        stats.correct += 1;
+      }
       return '' + (quoteHistory[answer[1]] == answer[0]);
     }
-    return '\"quote expired\"';
+    return JSON.stringify('quote expired');
   },
   sendStats: function(req){
     return JSON.stringify(stats);
@@ -54,9 +60,10 @@ module.exports = {
     }
     quoteHistory[result] = truthiness;
 
+    // sets a timer to delete quotes from history after 10 minutes.
     setTimeout(function(){
       delete quoteHistory[result];
-    }, 6000000)
+    }, 600000)
 
     return JSON.stringify(result);
   }
