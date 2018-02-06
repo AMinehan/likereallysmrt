@@ -2,6 +2,7 @@ const express = require('express');
 const app = express()
 
 app.use(express.static('../client'));
+app.use(express.json())
 require('./config/routes.js')(app, express);
 
 app.get('/test', (req, res, next)=>{

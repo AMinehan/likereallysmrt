@@ -46,13 +46,11 @@ TestString.prototype.getRandomSentence = function(){
   }
 
 
-
   while (triesLeft > 0){
     construct = [];
     triesLeft -= 1;
     currentPair = '_start';
     constructify();
-    // result = construct.join(' ');
 
     if (!construct.every((c)=>{return this.contains.has(c)})){
       return construct.join(' ');
@@ -66,11 +64,12 @@ TestString.prototype.getRandomSentence = function(){
 
 TestString.prototype.getRealSentence = function(){
   let sentenceIndex = Math.floor(Math.random() * this.sentences.length - 2);
+  if (sentenceIndex < 0) {
+    sentenceIndex = 0;
+  }
   let result = this.sentences[sentenceIndex];
 
-  console.log(this.sentences.length)
   for (let i = 1; result.length < 150 && sentenceIndex + i < this.sentences.length; i += 1) {
-    console.log(result, i)
     result += ' ' + this.sentences[sentenceIndex + i];
   }
   for (let i = -1; result.length < 150 && i + sentenceIndex >= 0; i -= 1) {
@@ -79,21 +78,6 @@ TestString.prototype.getRealSentence = function(){
 
   return result;
 }
-
-// function isStartOfSentence(str, index){
-//   let endIndicator = str.slice(index - 6, index).match(/[\!\?\.]/gi);
-//   if (str[index - 1].match(/[a-z]/i) || (endIndicator && endIndicator.length > 1)){
-//     return false
-//   }
-//   return true;
-// }
-
-// function isEndOfSentence(str, index){
-//   if (str[index - 1].toUpperCase === str[index - 1] && str[index - 2].match(/\.\?\!/)){
-//     return false;
-//   }
-//   return str[index].match(/[\.\!\?]/);
-// }
 
 function markovify(text){
   return new TestString(text);

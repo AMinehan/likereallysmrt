@@ -69,8 +69,6 @@ const parseText = function(text){
     addPair(wordPairs, lastPair, currentPair);
   }
 
-
-
   return [wordPairs, sentences];
 }
 

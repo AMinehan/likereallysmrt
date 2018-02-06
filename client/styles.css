@@ -4,6 +4,13 @@ body {
   background-size: auto 100%;
   background-position: center;
 }
+.bordered {
+  border-width: 1px;
+  border-style: solid;
+  border-color: black;
+  border-radius: 10px;
+  box-shadow: 3px 3px 10px;
+}
 .appContainer{
   width: 400px;
   border-radius: 20px;
@@ -42,4 +49,64 @@ body {
 }
 .robot{
   background-color: rgb(256, 150, 150);
+}
+.faq{
+  margin: 20px;
+  width: 28px;
+  height: 28px;
+  float: right;
+  position: relative;
+  background-color: rgb(230, 230, 230);
+  text-align: center;
+  font-size: 25;
+  cursor: pointer;
+  box-shadow: 3px 3px 10px;
+  border-radius: 15px;
+}
+.faqBox{
+  position: relative;
+  width: 60%;
+  height: 60%;
+  background-color: rgb(230, 230, 230);
+  overflow: auto;
+  font-size: 20;
+  top: 20%;
+  left: 20%;
+  min-width: 250px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.hide {
+  display: none;
+}
+.scoreBox{
+  height: 30px;
+  width: 90%;
+  margin-left: 5%;
+  margin-top: 10px;
+  margin-bottom: 5px;
+  background: linear-gradient(to right, rgb(256, 150, 150), rgb(150, 150, 256));
+}
+.scoreIcon{
+  height: 30px;
+  width: 30px;
+  position: relative;
+}
+.arrow {
+  width: 0px;
+  height: 0px;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 10px solid rgb(256, 150, 150);
+}
+.subScore{
+  display: none;
+  margin: auto;
+  height: 20px;
+  width: 65%;
+  background-color: white;
+  padding: 5px;
+}
+.scoreBox:hover .subScore{
+  display: block;
 }
