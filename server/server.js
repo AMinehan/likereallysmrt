@@ -6,5 +6,5 @@ app.use(express.json())
 require('./config/routes.js')(app, express);
 
 app.listen(4001, () => {
-  console.log('am has listening on 8080')
+  console.log('am has listening on 4001')
 });
