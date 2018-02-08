@@ -1,9 +1,11 @@
 node_modules/
 bower_components/
+server/stats/
 
 # Floobits
 .floo
 .floobit
 .floo
 .flooignore
+
 .DS_Store
