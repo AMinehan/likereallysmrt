@@ -30,21 +30,23 @@ function intMain(){
 
   // records user responses.
   responseBox.addEventListener('click', function(ev){
-    respond([ev.target.className.includes('real'), quoteBox.innerText]).then(function(res, err){
-      // drop in case of bad response
-      if (typeof res === 'string') {
+    if (ev.target !== responseBox){
+      respond([ev.target.className.includes('real'), quoteBox.innerText]).then(function(res, err){
+        // drop in case of bad response
+        if (typeof res === 'string') {
+          fetch();
+          return;
+        }
+        total += 1;
+        if (!res) {
+          wrong += 1;
+        }
+        score = Math.floor((1 - Math.sqrt(Math.sqrt(Math.sqrt(wrong/total)))) * 100);
+        console.log(score);
+        updateScore();
         fetch();
-        return;
-      }
-      total += 1;
-      if (!res) {
-        wrong += 1;
-      }
-      score = Math.floor((1 - Math.sqrt(Math.sqrt(Math.sqrt(wrong/total)))) * 100);
-      console.log(score);
-      updateScore();
-      fetch();
-    });
+      });
+    }
   });
 
   // updates score.  Forces me to question why I write comments for functions named

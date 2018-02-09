@@ -10,12 +10,19 @@ let quoteHistory = {};
 
 // loads stats from a file
 const loadStats = function(err, text){
+
   if (err) {
     console.log('error loading file: ', err);
     stats['guesses'] = 0;
     stats['correct'] = 0;
+    stats['falseNegatives'] = 0;
+    stats['falsePositives'] = 0;
   } else {
-    stats = JSON.parse(text)
+    stats = JSON.parse(text);
+    stats['guesses'] = stats['guesses'] || 0;
+    stats['correct'] = stats['correct'] || 0;
+    stats['falseNegatives'] = stats['falseNegatives'] || 0;
+    stats['falsePositives'] = stats['falsePositives'] || 0;
   }
 }
 
@@ -40,6 +47,10 @@ module.exports = {
       stats.guesses += 1;
       if (quoteHistory[answer[1]] == answer[0]) {
         stats.correct += 1;
+      } else if (answer[0] == true) {
+        stats['falsePositives'] += 1;
+      } else {
+        stats['falseNegatives'] += 1;
       }
       return '' + (quoteHistory[answer[1]] == answer[0]);
     }
