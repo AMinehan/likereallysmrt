@@ -1,8 +1,8 @@
 const parseText = require('./parser.js');
 
-/*
-  main class for each markov object.  This is what gets pushed into the sources array.
-*/
+
+// main class for each markov object.  This is what gets pushed into the sources array.
+
 const TestString = function(text){
   this.text = text;
   let parseResult = parseText(text);
@@ -28,6 +28,7 @@ TestString.prototype.getRandomSentence = function(){
 
   const constructify = () => {
 
+    // build quote to 150 characters until sentence is finished
     while(textLength < 150 || currentPair !== '_start') {
 
       targetPair = Math.floor(Math.random() * this.wordGroups[currentPair]['total']);
@@ -66,8 +67,6 @@ TestString.prototype.getRandomSentence = function(){
   }
 
   return 'Failed to generate a unique new sentence';
-
-
 }
 
 
@@ -90,6 +89,8 @@ TestString.prototype.getRealSentence = function(){
   return result;
 }
 
+
+// Exports module as a function
 function markovify(text){
   return new TestString(text);
 }
