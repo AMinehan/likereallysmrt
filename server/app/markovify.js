@@ -36,7 +36,7 @@ TestString.prototype.getRandomSentence = function(){
 
       for (var key in currentObj){
         if (currentObj[key] > targetPair){
-          construct.push(key.split(/[\"\”\“]/).join(''));
+          construct.push(key.replace(/[\"\”\“]/, ''));
 
           if (key.slice(key.length - 3).match(/[\.\!\?]/)){
             currentPair = '_start'

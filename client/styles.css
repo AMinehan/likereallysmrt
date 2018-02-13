@@ -10,20 +10,18 @@ body {
   border-color: black;
   border-radius: 10px;
   box-shadow: 3px 3px 10px;
-}
-.appContainer{
-  width: 400px;
-  border-radius: 20px;
-  padding: 10px;
   background-color: white;
-  box-shadow: 5px 5px 10px;
+}
+.appContainer {
+  width: 400px;
+  padding: 20px;
   text-align: center;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
-.response{
+.response {
   display: inline-block;
   width: 40%;
   height: 20px;
@@ -34,23 +32,23 @@ body {
   margin: 10px;
   cursor: pointer;
 }
-.quoteBox{
+.quoteBox {
   width: 100%;
   padding: 5px;
   font-size: 20px;
 }
-.quote{
+.quote {
   background-color: rgb(230, 230, 230);
   width: 100%;
   border-radius: 10px;
 }
-.real{
+.real {
   background-color: rgb(150, 150, 256);
 }
-.robot{
+.robot {
   background-color: rgb(256, 150, 150);
 }
-.faq{
+.faq {
   margin: 20px;
   width: 28px;
   height: 28px;
@@ -63,7 +61,7 @@ body {
   box-shadow: 3px 3px 10px;
   border-radius: 15px;
 }
-.faqBox{
+.faqBox {
   position: relative;
   width: 60%;
   height: 60%;
@@ -79,7 +77,7 @@ body {
 .hide {
   display: none;
 }
-.scoreBox{
+.scoreBox {
   height: 30px;
   width: 90%;
   margin-left: 5%;
@@ -87,7 +85,7 @@ body {
   margin-bottom: 5px;
   background: linear-gradient(to right, rgb(256, 150, 150), rgb(150, 150, 256));
 }
-.scoreIcon{
+.scoreIcon {
   height: 30px;
   width: 30px;
   position: relative;
@@ -99,7 +97,7 @@ body {
   border-right: 5px solid transparent;
   border-top: 10px solid rgb(256, 150, 150);
 }
-.subScore{
+.subScore {
   display: none;
   margin: auto;
   height: 18px;
@@ -107,6 +105,46 @@ body {
   background-color: white;
   padding: 5px;
 }
-.scoreBox:hover .subScore{
+.scoreBox:hover .subScore {
   display: block;
+}
+.answer {
+  border-top-width: 1px;
+  border-color: black;
+  border-style: solid;
+  border-left-width: 1px;
+  border-right-width: 1px;
+  width: 50%;
+  box-sizing: border-box;
+}
+.noselect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.attribution {
+  text-align: right;
+  font-size: 18px;
+}
+.next {
+  width: 20%;
+  height: 20px;
+  border-radius: 10px;
+  border-width: 1px;
+  border-style: solid;
+  box-shadow: 0px 0px 10px;
+  margin: 10px;
+  margin-left: 40%;
+  cursor: pointer;
+}
+.resultBox {
+  opacity: 0;
+  color: black;
+}
+.fadeIn {
+  opacity: 1;
+  transition: opacity 1s linear;
 }
