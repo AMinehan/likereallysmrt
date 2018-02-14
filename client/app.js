@@ -14,18 +14,18 @@ function intMain(){
   let scoreIcon = document.getElementsByClassName('scoreIcon')[0];
   let subScore = document.getElementsByClassName('subScore')[0];
   let attribution = document.getElementsByClassName('attribution')[0];
-  let total = 0;
-  let wrong = 0;
+  let totalAnswers = 0;
+  let wrongAnswers = 0;
   let score = 0;
-  let awaiting = false;
-  let expected;
+  let awaitingResponse = false;
+  let quoteExpectedTrue;
 
   // this function is so fetch.  Used for fetching new quotes.
-  const fetch = function(){
-    awaiting = true;
-    getQuote().then(function(res, err){
+  const fetch = function (){
+    awaitingResponse = true;
+    getQuote().then(function (res, err){
       quoteBox.innerText = res;
-      awaiting = false;
+      awaitingResponse = false;
     });
   }
 
@@ -34,7 +34,7 @@ function intMain(){
     faqBox.classList.toggle('hide');
   });
 
-  document.getElementsByClassName('next')[0].addEventListener('click', function(ev) {
+  document.getElementsByClassName('next')[0].addEventListener('click', function (ev) {
     responseBox.classList.toggle('hide');
     resultBox.classList.toggle('hide');
     resultBox.classList.toggle('fadeIn');
@@ -42,13 +42,15 @@ function intMain(){
   });
 
   // records user responses.
-  responseBox.addEventListener('click', function(ev){
+  responseBox.addEventListener('click', function (ev){
     let next = document.getElementsByClassName('next')[0];
-    if (ev.target !== responseBox && !awaiting){
+    if (ev.target !== responseBox && !awaitingResponse){
 
-      awaiting = true;
-      expected = ev.target.className.includes('real')
-      respond([expected, quoteBox.innerText]).then(function(res, err){
+      awaitingResponse = true;
+      quoteExpectedTrue = ev.target.className.includes('real')
+
+      //send answer to server, update dom when result arrives
+      respond([quoteExpectedTrue, quoteBox.innerText]).then(function (res, err){
         responseBox.classList.toggle('hide');
         resultBox.classList.toggle('hide');
         resultBox.classList.toggle('fadeIn');
@@ -58,11 +60,11 @@ function intMain(){
           fetch();
           return;
         }
-        total += 1;
+        totalAnswers += 1;
         if (!res) {
-          wrong += 1;
+          wrongAnswers += 1;
         }
-        if (expected) {
+        if (quoteExpectedTrue) {
           if (res) {
             attribution.innerText = '-donald trump';
             next.style.backgroundColor = 'rgb(150, 150, 256)';
@@ -80,7 +82,7 @@ function intMain(){
           }
         }
 
-        score = Math.floor((1 - Math.sqrt(Math.sqrt(Math.sqrt(wrong/total)))) * 100);
+        score = Math.floor((1 - Math.sqrt(Math.sqrt(Math.sqrt(wrongAnswers/totalAnswers)))) * 100);
         updateScore();
       });
     }
@@ -88,21 +90,20 @@ function intMain(){
 
   // updates score.  Forces me to question why I write comments for functions named
   // like this.
-  const updateScore = function(){
-    subScore.innerText = '' + (total - wrong) + ' out of ' + total + ' correct!'
+  const updateScore = function (){
+    subScore.innerText = '' + (totalAnswers - wrongAnswers) + ' out of ' + totalAnswers + ' correct!'
     scoreIcon.style.left = '' + (score - 50) + '%';
   }
-
   fetch();
 }
 
 
 // used for getting quotes.  Returns a promise.
 function getQuote(){
-  return new Promise(function(resolve, err){
+  return new Promise(function (resolve, err){
     let request = new XMLHttpRequest();
     request.open('get', '/api/talkToMeGoose', true);
-    request.onload = function(){
+    request.onload = function (){
       resolve(JSON.parse(request.responseText));
     }
     request.send();
@@ -110,7 +111,7 @@ function getQuote(){
 }
 
 function respond(answer){
-  return new Promise(function(resolve, err){
+  return new Promise(function (resolve, err){
     let request = new XMLHttpRequest();
     request.open('post', '/api/finalAnswer', true);
     request.setRequestHeader('content-type', 'application/json')
@@ -121,4 +122,3 @@ function respond(answer){
     request.send(JSON.stringify(answer) );
   });
 }
-
