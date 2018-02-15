@@ -24,6 +24,7 @@ TestString.prototype.getRandomSentence = function(){
   let triesLeft = 100;
   let textLength = 0;
   let targetPair, result, currentObj;
+  let currentSentence = [];
 
   const constructify = () => {
 
@@ -35,10 +36,11 @@ TestString.prototype.getRandomSentence = function(){
 
       for (var key in currentObj){
         if (currentObj[key] > targetPair){
-          construct.push(key);
+          currentSentence.push(key);
 
           if (key.slice(key.length - 3).match(/[\.\!\?]/)){
             currentPair = '_start'
+            construct.push(currentSentence.join(' '))
           } else {
             currentPair = key;
           }
