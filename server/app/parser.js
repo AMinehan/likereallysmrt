@@ -1,7 +1,7 @@
 // checks if a word pair key is a property on object.  If not, makes it a property.
 const define = function(obj, key){
   if (!obj.hasOwnProperty(key)){
-    obj[key] = {total: 0, nextPairs: {}};
+    obj[key] = [];
   }
 }
 
@@ -22,18 +22,12 @@ const splitIntoSentences = function(text){
       lastIndex = i + 1;
     }
   }
+  console.log('sentences: ', result.length)
   return result;
 }
 
-//
 const addPair = function(obj, prev, pair){
-  obj[prev]['total'] += 1;
-
-  if (obj[prev]['nextPairs'].hasOwnProperty(pair)){
-    obj[prev]['nextPairs'][pair] += 1;
-  } else {
-    obj[prev]['nextPairs'][pair] = 1;
-  }
+  obj[prev].push(pair);
 }
 
 // takes source text, splits into sentences, iterates through sentences and
@@ -76,6 +70,8 @@ const parseText = function(text){
     currentPair = words[j - 1];
     define(wordPairs, lastPair);
     addPair(wordPairs, lastPair, currentPair);
+    define(wordPairs, words[j - 1]);
+    define(wordPairs, words[j - 2] + ' ' + [j - 1]);
   }
 
   return [wordPairs, sentences];

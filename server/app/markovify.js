@@ -25,30 +25,26 @@ TestString.prototype.getRandomSentence = function(){
   let textLength = 0;
   let targetPair, result, currentObj;
   let currentSentence = [];
+  let nextObj;
 
   const constructify = () => {
 
     // build quote to 150 characters until sentence is finished
     while(textLength < 150 || currentPair !== '_start') {
 
-      targetPair = Math.floor(Math.random() * this.wordGroups[currentPair]['total']);
-      currentObj = this.wordGroups[currentPair]['nextPairs'];
+      if (this.wordGroups.hasOwnProperty(currentPair) && this.wordGroups[currentPair].length > 0) {
+        targetPair = Math.floor(Math.random() * this.wordGroups[currentPair].length);
+        currentObj = this.wordGroups[currentPair];
+        nextObj = currentObj[targetPair];
 
-      for (var key in currentObj){
-        if (currentObj[key] > targetPair){
-          currentSentence.push(key);
-
-          if (key.slice(key.length - 3).match(/[\.\!\?]/)){
-            currentPair = '_start'
-            construct.push(currentSentence.join(' '))
-          } else {
-            currentPair = key;
-          }
-          textLength += key.length + 1;
-          break;
-        } else {
-          targetPair -= currentObj[key];
-        }
+        currentSentence.push(nextObj);
+        currentPair = nextObj;
+      } else {
+        currentPair = '_start';
+        currentSentence = currentSentence.join(' ')
+        construct.push(currentSentence);
+        textLength += currentSentence.length;
+        currentSentence = [];
       }
     }
   }
@@ -61,9 +57,13 @@ TestString.prototype.getRandomSentence = function(){
     triesLeft -= 1;
     currentPair = '_start';
     constructify();
+    currentSentence = [];
+    textLength = 0;
 
     if (!construct.every((c)=>{return this.contains.has(c)})){
       return construct.join(' ');
+    } else {
+      console.log('rejecting for insufficient uniqueitudes: ', construct.join(' '));
     }
   }
 

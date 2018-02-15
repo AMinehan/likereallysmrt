@@ -1,8 +1,10 @@
-body {
-  background-image: url(background.jpg);
-  background-color: black;
-  background-size: 100% 100%;
-  background-position: center;
+.background {
+  height: 100%;
+  width: 100%;
+}
+.backgroundImg {
+  height: 100%;
+  width: 100%;
 }
 .bordered {
   border-width: 1px;
