@@ -1,6 +1,5 @@
 const parseText = require('./parser.js');
 
-
 // main class for each markov object.  This is what gets pushed into the sources array.
 
 const TestString = function(text){
@@ -36,17 +35,17 @@ TestString.prototype.getRandomSentence = function(){
 
       for (var key in currentObj){
         if (currentObj[key] > targetPair){
-          construct.push(key.replace(/[\"\”\“]/, ''));
+          construct.push(key);
 
           if (key.slice(key.length - 3).match(/[\.\!\?]/)){
             currentPair = '_start'
           } else {
-            currentPair = key
+            currentPair = key;
           }
           textLength += key.length + 1;
           break;
         } else {
-          targetPair -= currentObj[key]
+          targetPair -= currentObj[key];
         }
       }
     }
@@ -95,4 +94,4 @@ function markovify(text){
   return new TestString(text);
 }
 
-module.exports = markovify
+module.exports = markovify;
