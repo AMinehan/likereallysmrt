@@ -1,7 +1,7 @@
 // checks if a word pair key is a property on object.  If not, makes it a property.
 const define = function(obj, key){
   if (!obj.hasOwnProperty(key)){
-    obj[key] = {total: 0, nextPairs: {}}
+    obj[key] = {total: 0, nextPairs: {}};
   }
 }
 
@@ -14,12 +14,12 @@ const splitIntoSentences = function(text){
   for (let i = 0; i < text.length; i++){
     if (text[i].match(/[\.\!\?]/) && (((text[i + 1] === ' ' || text[i + 1] === '\n') && text[i - 2] !== '.'  && !text.slice(i - 4, i).match(/[A-Z]/)) || i === text.length - 1)){
 
-      // trim whitespace and remove characters that would look out of place in a fake quote.
+      // trim whitespace and remove characters that could look out of place in a fake quote.
       result.push(text.slice(lastIndex, i + 1).trim().replace(/[\"\”\“]/g, ''));
       lastIndex = i + 2;
     }
     if (text[i].match(/[\n]/)) {
-      lastIndex = i + 1
+      lastIndex = i + 1;
     }
   }
   return result;
@@ -57,7 +57,7 @@ const parseText = function(text){
     if (words.length > 2){
 
       addPair(wordPairs, '_start', words[0] + ' ' + words[1]);
-      addPair(wordPairs, '_start', words[0])
+      addPair(wordPairs, '_start', words[0]);
 
       define(wordPairs, words[0]);
       addPair(wordPairs, words[0], words[1] + ' ' + words[2]);
@@ -67,7 +67,7 @@ const parseText = function(text){
 
     for (var j = 3; j < words.length; j++){
       lastPair = words[j - 3] + ' ' + words[j - 2];
-      currentPair = words[j - 1] + ' ' + words[j]
+      currentPair = words[j - 1] + ' ' + words[j];
       define(wordPairs, lastPair);
       addPair(wordPairs, lastPair, currentPair);
     }
