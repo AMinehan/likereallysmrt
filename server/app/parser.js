@@ -15,7 +15,7 @@ const splitIntoSentences = function(text){
     if (text[i].match(/[\.\!\?]/) && (((text[i + 1] === ' ' || text[i + 1] === '\n') && text[i - 2] !== '.'  && !text.slice(i - 4, i).match(/[A-Z]/)) || i === text.length - 1)){
 
       // trim whitespace and remove characters that would look out of place in a fake quote.
-      result.push(text.slice(lastIndex, i + 1).trim().replace(/[\"\”\“]/, ''));
+      result.push(text.slice(lastIndex, i + 1).trim().replace(/[\"\”\“]/g, ''));
       lastIndex = i + 2;
     }
     if (text[i].match(/[\n]/)) {
